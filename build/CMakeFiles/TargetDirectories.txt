@@ -1,0 +1,3 @@
+/home/ccx/Redcamera/build/CMakeFiles/rebuild_cache.dir
+/home/ccx/Redcamera/build/CMakeFiles/edit_cache.dir
+/home/ccx/Redcamera/build/CMakeFiles/sample.dir
