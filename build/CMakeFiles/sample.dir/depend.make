@@ -132,7 +132,6 @@ CMakeFiles/sample.dir/data.cpp.o: ../include/thermal_cam_cmd.h
 CMakeFiles/sample.dir/data.cpp.o: ../data.cpp
 CMakeFiles/sample.dir/data.cpp.o: ../data.h
 
-CMakeFiles/sample.dir/display.cpp.o: ../data.h
 CMakeFiles/sample.dir/display.cpp.o: ../include/all_config.h
 CMakeFiles/sample.dir/display.cpp.o: ../include/libirparse.h
 CMakeFiles/sample.dir/display.cpp.o: ../include/libirprocess.h
@@ -241,6 +240,7 @@ CMakeFiles/sample.dir/display.cpp.o: ../opencv2/video/background_segm.hpp
 CMakeFiles/sample.dir/display.cpp.o: ../opencv2/video/tracking.hpp
 CMakeFiles/sample.dir/display.cpp.o: ../opencv2/videoio.hpp
 CMakeFiles/sample.dir/display.cpp.o: ../cmd.h
+CMakeFiles/sample.dir/display.cpp.o: ../data.h
 CMakeFiles/sample.dir/display.cpp.o: ../display.cpp
 CMakeFiles/sample.dir/display.cpp.o: ../display.h
 CMakeFiles/sample.dir/display.cpp.o: ../temperature.h

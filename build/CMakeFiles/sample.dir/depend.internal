@@ -133,7 +133,6 @@ CMakeFiles/sample.dir/data.cpp.o
  /home/ccx/Redcamera/data.cpp
  /home/ccx/Redcamera/data.h
 CMakeFiles/sample.dir/display.cpp.o
- ../data.h
  ../include/all_config.h
  ../include/libirparse.h
  ../include/libirprocess.h
@@ -242,6 +241,7 @@ CMakeFiles/sample.dir/display.cpp.o
  ../opencv2/video/tracking.hpp
  ../opencv2/videoio.hpp
  /home/ccx/Redcamera/cmd.h
+ /home/ccx/Redcamera/data.h
  /home/ccx/Redcamera/display.cpp
  /home/ccx/Redcamera/display.h
  /home/ccx/Redcamera/temperature.h

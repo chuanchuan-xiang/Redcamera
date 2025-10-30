@@ -3,7 +3,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-
+#include "libiruvc.h"
+#ifdef THERMAL_CAM_CMD
+#include "thermal_cam_cmd.h"
+#endif
 time_t timer0, timer1;
 uint8_t is_displaying = 0;
 uint8_t* image_tmp_frame1 = NULL;
@@ -83,22 +86,31 @@ void display_release(void)
 //enhance the image frame by the frameinfo
 int enhance_image_frame(uint16_t* src_frame, FrameInfo_t* frameinfo, uint16_t* dst_frame)
 {
-	int ret, lower_limit, upper_limit = 0;
-	int temp_enhace_en = 1;
-	float lower_temp = 10;
-	float upper_temp = 35.5;
-
-	lower_limit = (lower_temp + 273.15) * 16;
-	upper_limit = (upper_temp + 273.15) * 16;
-
-	ImgEnhanceParam_t img_enhance_param = { { 0.01,0.01,0.001,0.0001,150,0,0.25,\
-					  {temp_enhace_en,lower_limit,upper_limit} }, { 0,6,2,0,10,60,120 } };
-	ImageRes_t image_res = { frameinfo->width,frameinfo->height };
 	int pix_num = frameinfo->width * frameinfo->height;
-
+	
+	// 未标定时，直接复制原始数据，不做温度增强
 	if (frameinfo->img_enhance_status == IMG_ENHANCE_ON)
 	{
-		y14_image_enhance((uint16_t*)src_frame, image_res, img_enhance_param, (uint16_t*)dst_frame);
+		// 找到实际数据范围
+		uint16_t min_val = 65535, max_val = 0;
+		for (int i = 0; i < pix_num; i++)
+		{
+			if (src_frame[i] < min_val) min_val = src_frame[i];
+			if (src_frame[i] > max_val) max_val = src_frame[i];
+		}
+		
+		// 简单的线性拉伸到全范围
+		for (int i = 0; i < pix_num; i++)
+		{
+			if (max_val > min_val)
+			{
+				dst_frame[i] = ((src_frame[i] - min_val) * 16383) / (max_val - min_val);
+			}
+			else
+			{
+				dst_frame[i] = src_frame[i];
+			}
+		}
 	}
 	else
 	{
@@ -349,6 +361,23 @@ void display_one_frame(StreamFrameInfo_t* stream_frame_info)
 	char frameText[10] = { " " };
 	sprintf(frameText, "%.2f", frame);
 
+	// 获取最高温度和最低温度
+	uint16_t max_temp_raw = 0;
+	uint16_t min_temp_raw = 0;
+	float max_temp_celsius = 0.0f;
+	float min_temp_celsius = 0.0f;
+	
+#ifdef THERMAL_CAM_CMD
+	// 调用温度解算函数
+	if (tpd_get_max_temp(&max_temp_raw) == 0) {
+		// 温度单位是 1/16 K，转换为摄氏度: °C = K - 273.15
+		max_temp_celsius = (max_temp_raw / 16.0f) - 273.15f;
+	}
+	if (tpd_get_min_temp(&min_temp_raw) == 0) {
+		min_temp_celsius = (min_temp_raw / 16.0f) - 273.15f;
+	}
+#endif
+
 	int pix_num = stream_frame_info->image_info.width * stream_frame_info->image_info.height;
 	int width = stream_frame_info->image_info.width;
 	int height = stream_frame_info->image_info.height;
@@ -371,8 +400,25 @@ void display_one_frame(StreamFrameInfo_t* stream_frame_info)
 
 #ifdef OPENCV_ENABLE
 	cv::Mat image = cv::Mat(height, width, CV_8UC3, image_tmp_frame2);
+	
+	// 显示帧率
 	putText(image, frameText, cv::Point(11, 11), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar::all(0), 1, 8);
 	putText(image, frameText, cv::Point(10, 10), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar::all(255), 1, 8);
+	
+#ifdef THERMAL_CAM_CMD
+	// 显示最高温度
+	char maxTempText[64];
+	sprintf(maxTempText, "Max: %.2f C", max_temp_celsius);
+	putText(image, maxTempText, cv::Point(11, 31), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar::all(0), 1, 8);
+	putText(image, maxTempText, cv::Point(10, 30), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar::all(255), 1, 8);
+	
+	// 显示最低温度
+	char minTempText[64];
+	sprintf(minTempText, "Min: %.2f C", min_temp_celsius);
+	putText(image, minTempText, cv::Point(11, 51), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar::all(0), 1, 8);
+	putText(image, minTempText, cv::Point(10, 50), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar::all(255), 1, 8);
+#endif
+	
 	cv::imshow("Test", image);
 	cvWaitKey(5);
 #endif

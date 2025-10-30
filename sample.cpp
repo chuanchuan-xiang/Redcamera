@@ -11,10 +11,10 @@ void load_stream_frame_info(StreamFrameInfo_t* stream_frame_info)
         stream_frame_info->image_info.height = stream_frame_info->camera_param.height/2;
         stream_frame_info->image_info.rotate_side = NO_ROTATE;
         stream_frame_info->image_info.mirror_flip_status = STATUS_NO_MIRROR_FLIP;
-        stream_frame_info->image_info.pseudo_color_status = PSEUDO_COLOR_OFF;
-        stream_frame_info->image_info.img_enhance_status = IMG_ENHANCE_OFF;
-        stream_frame_info->image_info.input_format = INPUT_FMT_YUV422; //only Y14 or Y16 mode can use enhance and pseudo color
-        stream_frame_info->image_info.output_format = OUTPUT_FMT_BGR888; //if display on opencv,please select BGR888
+        stream_frame_info->image_info.pseudo_color_status = PSEUDO_COLOR_ON;  // 启用伪彩色
+        stream_frame_info->image_info.img_enhance_status = IMG_ENHANCE_ON;    // 启用图像增强
+        stream_frame_info->image_info.input_format = INPUT_FMT_Y16;           // 使用Y16格式支持伪彩色
+        stream_frame_info->image_info.output_format = OUTPUT_FMT_BGR888;      // if display on opencv,please select BGR888
 
         stream_frame_info->temp_info.width = stream_frame_info->camera_param.width;
         stream_frame_info->temp_info.height = stream_frame_info->camera_param.height/2;
@@ -28,10 +28,10 @@ void load_stream_frame_info(StreamFrameInfo_t* stream_frame_info)
     stream_frame_info->image_info.height = stream_frame_info->camera_param.height;
     stream_frame_info->image_info.rotate_side = NO_ROTATE;
     stream_frame_info->image_info.mirror_flip_status = STATUS_NO_MIRROR_FLIP;
-    stream_frame_info->image_info.pseudo_color_status = PSEUDO_COLOR_OFF;
-    stream_frame_info->image_info.img_enhance_status = IMG_ENHANCE_OFF;
-    stream_frame_info->image_info.input_format = INPUT_FMT_YUV422; //only Y14 or Y16 mode can use enhance and pseudo color
-    stream_frame_info->image_info.output_format = OUTPUT_FMT_BGR888; //if display on opencv,please select BGR888
+    stream_frame_info->image_info.pseudo_color_status = PSEUDO_COLOR_ON;  // 启用伪彩色
+    stream_frame_info->image_info.img_enhance_status = IMG_ENHANCE_ON;    // 启用图像增强
+    stream_frame_info->image_info.input_format = INPUT_FMT_Y16;           // 使用Y16格式支持伪彩色
+    stream_frame_info->image_info.output_format = OUTPUT_FMT_BGR888;      // if display on opencv,please select BGR888
 
     stream_frame_info->image_byte_size = stream_frame_info->image_info.width * stream_frame_info->image_info.height * 2;
     stream_frame_info->temp_byte_size = 0;
@@ -41,10 +41,10 @@ void load_stream_frame_info(StreamFrameInfo_t* stream_frame_info)
     stream_frame_info->image_info.height = stream_frame_info->camera_param.height;
     stream_frame_info->image_info.rotate_side = NO_ROTATE;
     stream_frame_info->image_info.mirror_flip_status = STATUS_NO_MIRROR_FLIP;
-    stream_frame_info->image_info.pseudo_color_status = PSEUDO_COLOR_OFF;
-    stream_frame_info->image_info.img_enhance_status = IMG_ENHANCE_OFF;
-    stream_frame_info->image_info.input_format = INPUT_FMT_Y16; //only Y14 or Y16 mode can use enhance and pseudo color
-    stream_frame_info->image_info.output_format = OUTPUT_FMT_BGR888; //if display on opencv,please select BGR888
+    stream_frame_info->image_info.pseudo_color_status = PSEUDO_COLOR_ON;  // 启用伪彩色
+    stream_frame_info->image_info.img_enhance_status = IMG_ENHANCE_ON;    // 启用图像增强
+    stream_frame_info->image_info.input_format = INPUT_FMT_Y16;           // 使用Y16格式支持伪彩色
+    stream_frame_info->image_info.output_format = OUTPUT_FMT_BGR888;      // if display on opencv,please select BGR888
 
     stream_frame_info->image_byte_size = stream_frame_info->image_info.width * stream_frame_info->image_info.height * 2;
     stream_frame_info->temp_byte_size = 0;

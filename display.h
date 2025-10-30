@@ -2,7 +2,7 @@
 #define _DISPALAY_H_
 #define  _CRT_SECURE_NO_WARNINGS
 #include <stdint.h>
-#include <data.h>
+#include "data.h"
 #include "libirparse.h"
 #include "libirprocess.h"
 #include "cmd.h"
